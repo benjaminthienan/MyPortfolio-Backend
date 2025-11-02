@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./error.controller.js";
+
+// Create a new user
 const create = async (req, res) => {
   const user = new User(req.body);
   try {
@@ -14,6 +16,8 @@ const create = async (req, res) => {
     });
   }
 };
+
+// List all users
 const list = async (req, res) => {
   try {
     let users = await User.find().select("name email updated created");
@@ -24,6 +28,8 @@ const list = async (req, res) => {
     });
   }
 };
+
+// Middleware: find user by ID
 const userByID = async (req, res, next, id) => {
   try {
     let user = await User.findById(id);
@@ -39,11 +45,15 @@ const userByID = async (req, res, next, id) => {
     });
   }
 };
+
+// Read user profile
 const read = (req, res) => {
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
   return res.json(req.profile);
 };
+
+// Update user
 const update = async (req, res) => {
   try {
     let user = req.profile;
@@ -59,6 +69,8 @@ const update = async (req, res) => {
     });
   }
 };
+
+// Delete user by ID
 const remove = async (req, res) => {
   try {
     let user = req.profile;
@@ -72,4 +84,16 @@ const remove = async (req, res) => {
     });
   }
 };
-export default { create, userByID, read, list, remove, update };
+
+// Delete all users
+const removeAll = async (req, res) => {
+  try {
+    const result = await User.deleteMany({});
+    res.json({ deletedCount: result.deletedCount });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Export all controller functions
+export default { create, list, read, update, remove, removeAll, userByID };

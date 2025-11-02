@@ -6,7 +6,9 @@ import contactRoutes from "./server/routes/contact.routes.js";
 import projectRoutes from "./server/routes/project.routes.js";
 import qualificationRoutes from "./server/routes/qualification.routes.js";
 import userRoutes from "./server/routes/user.routes.js";
+import authRoutes from "./server/routes/auth.routes.js";
 
+app.use("/", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/contacts", contactRoutes);
 app.use("/api/projects", projectRoutes);
