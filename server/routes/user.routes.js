@@ -1,17 +1,24 @@
 import express from "express";
 import userCtrl from "../controllers/user.controller.js";
-import authCtrl from "../controllers/auth.controller.js";
-const router = express.Router();
-router.route("/api/users").post(userCtrl.create);
-router.route("/api/users").get(userCtrl.list);
-router
-  .route("/api/users/:userId")
-  .get(authCtrl.requireSignin, userCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
 
+const router = express.Router();
+
+// Create user
+router.post("/", userCtrl.create);
+
+// Get all users
+router.get("/", userCtrl.list);
+
+// Get single user by ID
+router.get("/:userId", userCtrl.read);
+
+// Update user
+router.put("/:userId", userCtrl.update);
+
+// Delete user by ID
+router.delete("/:userId", userCtrl.remove);
+
+// Param middleware
 router.param("userId", userCtrl.userByID);
-router.route("/api/users/:userId").get(userCtrl.read);
-router.route("/api/users/:userId").put(userCtrl.update);
-router.route("/api/users/:userId").delete(userCtrl.remove);
+
 export default router;

@@ -1,16 +1,20 @@
 import express from "express";
-import Qualification from "../models/qualification.model.js";
+import {
+  getAllQualifications,
+  getQualificationById,
+  createQualification,
+  updateQualification,
+  deleteQualification,
+  deleteAllQualifications
+} from "../controllers/qualification.controller.js";
 
 const router = express.Router();
 
-router.route("/")
-  .get(async (req, res) => {
-    const qualifications = await Qualification.find();
-    res.json(qualifications);
-  })
-  .post(async (req, res) => {
-    const newQualification = await Qualification.create(req.body);
-    res.json(newQualification);
-  });
+router.get("/", getAllQualifications);
+router.get("/:id", getQualificationById);
+router.post("/", createQualification);
+router.put("/:id", updateQualification);
+router.delete("/:id", deleteQualification);
+router.delete("/", deleteAllQualifications);
 
 export default router;

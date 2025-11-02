@@ -1,10 +1,15 @@
-function handleError(req, res) {
-  // Your code to handle the error
-}
-function getErrorMessage(errMsg) {
-  console.log(errMsg);
-} // Export the controller function
+// send error response
+const handleError = (req, res, error) => {
+  console.error("Error:", error.message || error);
+  res.status(500).json({ error: error.message || "An unknown error occurred" });
+};
+
+const getErrorMessage = (err) => {
+  if (err && err.message) return err.message;
+  return "An unexpected error occurred";
+};
+
 export default {
-  handleError: handleError,
-  getErrorMessage: getErrorMessage,
+  handleError,
+  getErrorMessage,
 };
